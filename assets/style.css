@@ -1,11 +1,6 @@
 .itunes-col {
-    /* position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0; */
-    height: 88vh !important;
+    height: 88vh !important; /* Hackaronie and cheezzz */
     overflow-y: scroll;
-    /* width: 70%; */
 }
 
 .playlist-col {
