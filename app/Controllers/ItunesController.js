@@ -10,12 +10,14 @@ function _loadApiParamsFromTheDom(api) {
     let form = document.getElementById(FORM.NAME)
     let search = form[FORM.SEARCH].value
     let user = form[FORM.USERS_TEMPLATE].value
-    let artSize = Common.toInteger( form[FORM.ART_SIZE].value)
+    let artSize = Common.toInteger(form[FORM.ART_SIZE].value)
+    let newUser = form[FORM.NEW_USER].value
 
     _apiParams.Api = api
     _apiParams.searchTerms = search
     _apiParams.userName = user
     _apiParams.albumnArtSize = artSize
+    _apiParams.newUserName = newUser
 }
 
 /** This puts all the users in 'users-template' combobox in the DOM */
@@ -30,6 +32,8 @@ function _drawCurrentUser() {
 
     // Clear out the new user input
     newUser.value = ''
+
+    // _setState(_apiParams.NAMES.userName, _itunesService.CurrentUser)
 
     // Set the current user on the users combobox
     currentUser.value = _itunesService.CurrentUser
@@ -76,11 +80,15 @@ export default class ItunesController {
         _setState(_apiParams.NAMES.searchTerms, 'tago mago')
         _setState(_apiParams.NAMES.Api, API.ITUNES.NAME)
         _itunesService.loadItunesSearch(_apiParams)
-        
+
         //NOTE Thease functions are vaporious
         _itunesService.getUsers()
         _addFakeUsers(['mark-d', 'DMark', 'MarkD', 'Rizza'])
+        _setState(_apiParams.NAMES.userName, 'Rizza')
+        _itunesService.setCurrentUser(_apiParams)
+
         _loadApiParamsFromTheDom(_apiParams.Api)
+        _itunesService.loadSandPlayList(_apiParams)
     }
 
     search() {
@@ -94,7 +102,13 @@ export default class ItunesController {
         _itunesService.loadItunesSearch(_apiParams)
     }
 
-    addUser() {
+    loadSandPlayList(event) {
+        event.preventDefault()
+        _loadApiParamsFromTheDom(API.SAND.NAME)
+        _itunesService.loadSandPlayList(_apiParams)
+    }
+
+    addUser(event) {
         /**
          * 1. Load the _apiParams object
          * 1. Get the new user from document.getElementById('new-user')
@@ -102,12 +116,22 @@ export default class ItunesController {
          * 3. Set the new user
          * 4. Draw the users
          */
+        event.preventDefault()
+        _loadApiParamsFromTheDom(API.SAND.NAME)
+        _itunesService.setCurrentUser(_apiParams)
     }
 
     apiParamChange() {
         /**
          * 1. 
          */
+    }
+
+    changeUser(event) {
+        event.preventDefault()
+        _setState(_apiParams.NAMES.Api, API.SAND.NAME)
+        _loadApiParamsFromTheDom(API.SAND.NAME)
+        _itunesService.changeUser(_apiParams)
     }
 
     setCurrentPlayer(event) {

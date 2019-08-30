@@ -18,7 +18,6 @@ function _getSandTemplate(song) {
                         <hr>
                         <audio style="float: left;" ${song.getPlayerEvent()} controls src="${song.preview}"></audio>
                         <button style="float: right;" ${song.getRemoveEvent()} class="btn btn-outline-success">Remove</button>
-                        
                     </div>
                     
                 </div>
@@ -134,6 +133,18 @@ export default class Song {
         return this.api == API.ITUNES.NAME ?
             _getITunesTemplate(this) :
             _getSandTemplate(this)
+    }
+
+    get Data() {
+        return {
+            albumArt: this.sandArtSize,
+            artist: this.artist,
+            album: this.album,
+            title: this.title,
+            preview: this.preview,
+            price: this.price,
+            user: this.user
+        }
     }
 
 

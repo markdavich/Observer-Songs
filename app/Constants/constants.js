@@ -25,7 +25,9 @@ export const MVC = {
       addUser: 'addUser',
       loadItunesSearch: 'loadItunesSearch',
       addToPlayList: 'addToPlayList',
-      removeFromPlayList: 'removeFromPlayList'
+      removeFromPlayList: 'removeFromPlayList',
+      loadSandPlayList: 'loadSandPlayList',
+      changeUser: 'changeUser'
     }
   }
 }
@@ -45,11 +47,13 @@ export class ApiParams {
     this.userName = ''
     this.searchTerms = ''
     this.albumnArtSize = ALBUM_ART_SIZE._200x200
+    this.newUserName = '',
     this.NAMES = {
       Api: 'Api',
       userName: 'userName',
       searchTerms: 'searchTerms',
-      albumnArtSize: 'albumnArtSize'
+      albumnArtSize: 'albumnArtSize',
+      newUserName: 'newUserName'
     }
   }
 }

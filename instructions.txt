@@ -22,3 +22,25 @@ var schema = new Schema({
     albumArt: { type: String, required: true },
     user: { type: String, required: true }
 })
+
+
+Todos send the todo POJO
+open weathe icons
+http://openweathermap.org/img/wn/10d@2x.png
+
+// https://bcw-sandbox.herokuapp.com/api/weather
+
+{
+  "coord": {
+    "lon": -116.2,
+    "lat": 43.62
+  },
+  "weather": [
+    {
+      "id": 800,
+      "main": "Clear",
+      "description": "clear sky",
+      "icon": "01d"
+    }
+
+  return `http://openweathermap.org/img/wn/${weather.icon}@2x.png`

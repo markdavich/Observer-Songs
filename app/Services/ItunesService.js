@@ -1,5 +1,5 @@
 import Song from "../Models/Song.js";
-import { STATE, API, ApiParams } from "../Constants/constants.js";
+import { STATE, API, ApiParams, ALBUM_ART_SIZE } from "../Constants/constants.js";
 import Users from "../Models/Users.js";
 
 //Private
@@ -36,13 +36,60 @@ function _setState(propName, data) {
 
 //Public
 export default class ItunesService {
+    /**
+     * 
+     * @param {ApiParams} apiParams 
+     */
+    changeUser(apiParams) {
+        _setState(STATE.PROPS.CURRENT_USER, apiParams.userName)
+        _setState(STATE.PROPS.PLAYLIST, [])
+        this.loadSandPlayList(apiParams)
+    }
+    /**
+     * 
+     * @param {ApiParams} apiParams 
+     */
+    loadSandPlayList(apiParams) {
+        let endPoint = API.SAND.getEndPoint(apiParams.userName)
+        _sandBoxApi.get(endPoint)
+            .then(response => {
+                console.log(response)
+                //NOTE Set State...
+                let axiosData = response.data
+                let sandData = axiosData.data
+
+                // sandData is an Array. It needs to be spread before adding to the playlist
+                let newPlayList = [...sandData, ..._state.playlist]
+
+                _setState(STATE.PROPS.PLAYLIST, newPlayList)
+            })
+            .catch(error => {
+                console.log(error)
+            })
+    }
     removeFromPlayList(trackId, _apiParams) {
         throw new Error("Method not implemented.");
     }
+    /**
+     * 
+     * @param {string} trackId The iTunes trackId
+     * @param {ApiParams} _apiParams 
+     */
     addToPlayList(trackId, _apiParams) {
         let songData = _state.songs.find(song => song.trackId == trackId)
-        let newPlayList = [songData, ..._state.playlist]
-        _setState(STATE.PROPS.PLAYLIST, newPlayList)
+        let sandSong = new Song(songData, _apiParams)
+        let newSandData = sandSong.Data
+        let url = API.SAND.getEndPoint(_apiParams.userName)
+
+        _sandBoxApi.post(url, newSandData)
+            .then(response => {
+                console.log(response)
+                let newPlayList = [songData, ..._state.playlist]
+                _setState(STATE.PROPS.PLAYLIST, newPlayList)
+            })
+            .catch(error => {
+                console.log(error);
+            })
     }
     /**
      * 
@@ -61,8 +108,16 @@ export default class ItunesService {
         return _state.songs
     }
 
+    /**
+     * 
+     * @param {ApiParams} apiParams 
+     */
     getPlayList(apiParams) {
-        return _state.playlist.map(song => new Song(song, apiParams))
+        let params = new ApiParams()
+        params.Api = API.SAND.NAME
+        params.albumnArtSize = ALBUM_ART_SIZE._100x100
+        params.userName = apiParams.userName
+        return _state.playlist.map(song => new Song(song, params))
     }
 
     /** This is a 'string' holding the current user name */
@@ -114,14 +169,26 @@ export default class ItunesService {
     }
 
     addUser(newUserName) {
+        if (newUserName.trim() === '') return false
+
         if (_state.users.addUser(newUserName)) {
             _setState(STATE.PROPS.USERS, _state.users)
         }
 
         _setState(STATE.PROPS.CURRENT_USER, newUserName)
+
+        return true
     }
 
-    setCurrentUser(currentUserName) {
-        _setState(STATE.PROPS.CURRENT_USER, currentUserName)
+    /**
+     * 
+     * @param {ApiParams} apiParams 
+     */
+    setCurrentUser(apiParams) {
+        if (this.addUser(apiParams.newUserName)) {
+            apiParams.userName = apiParams.newUserName
+            this.changeUser(apiParams)
+        }
+
     }
 }
