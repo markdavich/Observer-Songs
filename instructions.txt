@@ -1,0 +1,24 @@
+Create playlist
+  My Favorites
+  Send favorites to sandbox
+  The sand box has one playlist
+
+  1. The search results in a list of songs from iTunes
+  2. Each Item on the list will have the ability to
+     be sent to the "Play List"
+     1. Once it 
+
+
+baseURL: http://bcw-sandbox.herokuapp.com/api/songs
+userURL: http://bcw-sandbox.herokuapp.com/api/YOURNAME/songs/
+
+This is sand boxes schema
+var schema = new Schema({
+    artist: { type: String, required: true },
+    album: { type: String, required: true },
+    title: { type: String, required: true },
+    preview: { type: String, required: true },
+    price: { type: String, required: true },
+    albumArt: { type: String, required: true },
+    user: { type: String, required: true }
+})

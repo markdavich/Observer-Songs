@@ -13,8 +13,60 @@
 </head>
 
 <body>
+    <header>
+        <nav id="nav-bar" class="navbar navbar-light bg-light fixed-top">
+            <a class="navbar-brand" href="#">
+                <img src="" width="30" height="30" class="d-inline-block align-top" alt="">
+                Observer Songs
+                <span style="font-size: 0.5em;">(Not a "Mobile First" Site)</span>
+            </a>
+
+            <form id="form" class="form-inline my-2 my-lg-0"
+                onsubmit="app.controllers.itunesController.loadItunesSearch(event)">
+                <div class="input-group">
+                    <label for="customRange2">Art Size</label>
+                    <input id="art-size" onchange="app.controllers.itunesController.loadItunesSearch(event)" vlaue="2"
+                        type="range" class="custom-range" min="0" max="4" id="customRange2">
+                </div>
+
+                <div class="input-group">
+                    <div class="input-group-prepend ml-3">
+                        <div class="input-group-text">Search Terms</div>
+                    </div>
+                    <input id="search" class="form-control" name="search" type="search" value="tago mago"
+                        placeholder="Search">
+                    <div class="input-group-append">
+                        <button class="btn btn-outline-success my-2 my-sm-0" name="search-button"
+                            type="submit">Search</button>
+                    </div>
+                </div>
+                <div class="input-group">
+                    <div class="input-group-prepend ml-3">
+                        <div class="input-group-text">New User</div>
+                    </div>
+                    <input id="new-user" class="form-control" name="new-user" type="text" placeholder="New User Name">
+                    <div class="input-group-append">
+                        <button class="btn btn-outline-success my-2 my-sm-0"
+                            onchange="app.controllers.itunesController.addUser()" name="new-user-button">Add</button>
+                    </div>
+                </div>
+                <div class="input-group ml-3">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text">User</div>
+                    </div>
+                    <select id="users-template" class="form-control"
+                        onchange="app.controllers.itunesController.apiParamChange()" name="users">
+                        <!-- Users get injected here -->
+                        <!-- <option value="injected">injected</option> -->
+                    </select>
+                </div>
+            </form>
+        </nav>
+    </header>
+
+
     <div class="container-fluid">
-        <div class="row">
+        <!-- <div class="row">
             <div class="col-12">
                 <form onsubmit="app.controllers.itunesController.search(event)">
                     <div class="form-group row">
@@ -24,12 +76,18 @@
                 </form>
 
             </div>
+        </div> -->
+
+        <div class="row">
+            <div id="songs" class="col-6 col-lg-6">
+                <!-- iTunes Songs Template injected here -->
+            </div>
+            <div id="playlist-template" class="col-6 col-lg-6">
+                <!-- SandBox Playlist injected here -->
+            </div>
         </div>
 
-        <div id="songs" class="row">
-            <!-- template to generate -->
 
-        </div>
     </div>
 
 
@@ -38,6 +96,8 @@
     <script src=" https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.js"
         integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous">
         </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.0/axios.js"
+        integrity="sha256-XmdRbTre/3RulhYk/cOBUMpYlaAp2Rpo/s556u0OIKk=" crossorigin="anonymous"></script>
     <script src="app/main.js" type="module"></script>
 </body>
 
